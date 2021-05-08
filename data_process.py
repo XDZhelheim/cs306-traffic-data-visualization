@@ -28,6 +28,6 @@ if __name__ == "__main__":
 
         all_path.append(path_dict)
 
-    with open("taxi_data_{}.js".format(num_of_taxis), "w") as f:
+    with open("./data/taxi_data_{}.js".format(num_of_taxis), "w") as f:
         f.write("let taxi_tracks = ")
         json.dump(all_path, f)
