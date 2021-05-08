@@ -6,7 +6,7 @@ CS306 Data Mining Project
 `back_end.py` 现在没用到
 
 ```bash
-python taxi_data_process.py
+python data_process.py
 ```
 
 然后直接浏览器打开 map.html
