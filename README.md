@@ -5,8 +5,7 @@ CS306 Data Mining Project
 
 `back_end.py` 现在没用到
 
-```bash
-python data_process.py
-```
+直接浏览器打开 `map.html`
 
-然后直接浏览器打开 map.html
+`data_process.py` 用来生成数据
+修改 `num_of_taxis` 来控制读前几行
