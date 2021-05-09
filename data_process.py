@@ -1,14 +1,21 @@
 import pandas as pd
 import numpy as np
 import json
+import argparse
+
 
 def add_to_dict(row: pd.Series, path_dict: dict):
     path_dict["path"].append([row["lat"], row["lon"], row["order"]])
 
-if __name__ == "__main__":
-    num_of_taxis = 10000
 
-    df = pd.read_csv("./sample_taxi.csv", nrows=num_of_taxis)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", "--rows", type=int, default=10000)
+
+    args = parser.parse_args()
+    num_of_rows = args.rows
+
+    df = pd.read_csv("./sample_taxi.csv", nrows=num_of_rows)
 
     id_list = list(df["taxi_id"])
     id_list = np.unique(id_list)
@@ -21,13 +28,15 @@ if __name__ == "__main__":
         df_id["order"] = range(len(df_id))
 
         path_dict = {"path": []}
-        df_id.apply(add_to_dict, args=(path_dict,), axis=1)
+        df_id.apply(add_to_dict, args=(path_dict, ), axis=1)
         # for i in range(len(df_id)):
         #     row = df_id.iloc[i]
         #     path_dict["path"].append([row["lat"], row["lon"], i])
 
         all_path.append(path_dict)
 
-    with open("./data/taxi_data_{}.js".format(num_of_taxis), "w") as f:
+    with open("./data/taxi_data_{}.js".format(num_of_rows), "w") as f:
         f.write("let taxi_tracks = ")
         json.dump(all_path, f)
+
+    print("Finished writing data to ./data/taxi_data_{}.js".format(num_of_rows))

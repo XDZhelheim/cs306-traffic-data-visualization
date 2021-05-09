@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>动态轨迹图</title>
+    <title>深圳市出租车动态轨迹图</title>
 </head>
 
 <script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=A37BZ-LSCEX-XEI4U-T6WGS-Z5P7O-BNF4W&libraries=visualization"></script>
@@ -30,7 +30,7 @@
     <div id="container"></div>
 </body>
 
-<script src="../data/taxi_data_10000.js"></script>
+<script src="../data/taxi_data_20000.js"></script>
 <script>
     let track = null;
 
@@ -60,7 +60,8 @@
         new TMap.visualization.Trail({
             pickStyle:function(item){ //轨迹图样式映射函数
                 return {
-                    width: 2
+                    width: 2,
+                    color: "#FFFF00"
                 }
             },
             startTime: 0,//动画循环周期的起始时间戳
