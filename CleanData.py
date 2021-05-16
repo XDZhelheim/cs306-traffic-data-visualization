@@ -30,7 +30,7 @@ def z_turn(x, y):
 
 
 def getDistrictStreedAndId(f):
-    for i in range(0, f.shape[0]):
+    for i in range(0, 10):
         lat, lon = z_turn(f.iloc[i, 3], f.iloc[i, 2])
         url = "http://api.map.baidu.com/geocoder/v2/?location=" + lat + "," + lon + "&output=json&pois=1&ak=YWdGplhYjUGQ3GtpKNeuTM2S"
         req = urllib.request.urlopen(url)  # json格式的返回数据
@@ -45,11 +45,11 @@ def getDistrictStreedAndId(f):
 
 
 if __name__ == "__main__":
-    f = pd.read_csv("repository/sample_taxi.csv")
-    # f[['district', 'street', 'street_id']] = None
+    f = pd.read_csv("./sample_taxi.csv")
+    f[['district', 'street', 'street_id']] = None
     # print(f)
     afterDeleteDataOutOfBound = deleteDataOutOfBound(f)
     # print(afterDeleteDataOutOfBound)
     afterAddInfo = getDistrictStreedAndId(afterDeleteDataOutOfBound)
     # print(afterAddInfo)
-    afterAddInfo.to_csv("repository/sample_taxi_after_clean.csv", index=False, sep=',')
+    afterAddInfo.to_csv("./sample_taxi_after_clean.csv", index=False, sep=',')

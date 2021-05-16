@@ -20,15 +20,20 @@ def parse_time(t: str):
 def add_to_dict(row: pd.Series, path_dict: dict):
     path_dict["path"].append([row["lat"], row["lon"], parse_time(row["time"])])
 
+def deleteDataOutOfBound(f):
+    afterDelete = f[(113.766667 <= f['lon']) & (f['lon'] <= 114.616667) & (20.45 <= f['lat']) & (f['lat'] <= 25.866667)]
+    return afterDelete
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r", "--rows", type=int, default=10000)
+    parser.add_argument("-r", "--rows", type=int, default=1000000)
 
     args = parser.parse_args()
     num_of_rows = args.rows
 
-    df = pd.read_csv("./sample_taxi.csv", nrows=num_of_rows)
+    df = pd.read_csv("../sample_taxi.csv", nrows=num_of_rows)
+
+    df = deleteDataOutOfBound(df)
 
     id_list = list(df["taxi_id"])
     id_list = np.unique(id_list)
