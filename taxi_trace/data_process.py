@@ -31,7 +31,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     num_of_rows = args.rows
 
-    df = pd.read_csv("../sample_taxi.csv", nrows=num_of_rows)
+    df = pd.read_csv("../sample_taxi_after_clean.csv", nrows=num_of_rows)
 
     df = deleteDataOutOfBound(df)
 
