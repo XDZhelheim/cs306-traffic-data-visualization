@@ -20,6 +20,15 @@
         padding: 0px;
     }
 
+    #time {
+        position: fixed !important;
+        top: 10px;
+        left: 20px;
+        color: white;
+        z-index: 1;
+        font-size: larger;
+    }
+
     #container {
         width: 100%;
         height: 100%;
@@ -27,12 +36,26 @@
 </style>
 
 <body>
+    <p id="time"></p>
     <div id="container"></div>
 </body>
 
 <script src="../data/taxi_data_1000000.js"></script>
 <script>
     let track = null;
+
+    //初始化轨迹图并添加至map图层
+    let trail = new TMap.visualization.Trail({
+        pickStyle:function(item){ //轨迹图样式映射函数
+            return {
+                width: 2,
+                color: "#FFFF00"
+            }
+        },
+        startTime: 0,//动画循环周期的起始时间戳
+        showDuration: 500,//动画中轨迹点高亮的持续时间
+        playRate: 400 // 动画播放倍速
+    }).setData(taxi_tracks); //设置数据
 
     // deprecated temporarily
     function get_data() {
@@ -56,23 +79,31 @@
             mapStyleId: "style1" //个性化样式
         });
 
-        //初始化轨迹图并添加至map图层
-        new TMap.visualization.Trail({
-            pickStyle:function(item){ //轨迹图样式映射函数
-                return {
-                    width: 2,
-                    color: "#FFFF00"
-                }
-            },
-            startTime: 0,//动画循环周期的起始时间戳
-            showDuration: 500,//动画中轨迹点高亮的持续时间
-            playRate: 400 // 动画播放倍速
-
-        })
-        .addTo(map)
-        .setData(taxi_tracks); //设置数据
-        
+        trail.addTo(map);
     }
+
+    let sec = 0;
+    let min = 0;
+    let hour = 0;
+
+    function updateTime() {
+        sec += 1;
+        if (sec >= 60) {
+            min += 1;
+            sec = 0;
+        }
+        if (min >= 60) {
+            hour += 1;
+            min = 0;
+        }
+        if (hour >= 24) {
+            hour = 0;
+        }
+
+        document.getElementById("time").innerHTML = hour + ":" + min + ":" + sec;
+    }
+
+    let timer = window.setInterval(updateTime, 1000 / trail.getPlayRate());
 
 </script>
 
