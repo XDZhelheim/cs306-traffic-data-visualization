@@ -40,11 +40,11 @@
     <div id="container"></div>
 </body>
 
-<script src="../taxi_trace/data/taxi_data_1000000.js"></script>
+<script src="./data/taxi_data_1000000.js"></script>
 <script>
     let track = null;
 
-    初始化轨迹图并添加至map图层
+    // 初始化轨迹图并添加至map图层
     let trail = new TMap.visualization.Trail({
         pickStyle:function(item){ //轨迹图样式映射函数
             return {
