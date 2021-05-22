@@ -9,8 +9,8 @@
 </head>
 
 <script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=A37BZ-LSCEX-XEI4U-T6WGS-Z5P7O-BNF4W&libraries=visualization"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 <style type="text/css">
     html,
@@ -42,8 +42,6 @@
 
 <script src="../data/taxi_data_1000000.js"></script>
 <script>
-    let track = null;
-
     //初始化轨迹图并添加至map图层
     let trail = new TMap.visualization.Trail({
         pickStyle:function(item){ //轨迹图样式映射函数
@@ -56,16 +54,6 @@
         showDuration: 100,//动画中轨迹点高亮的持续时间
         playRate: 400 // 动画播放倍速
     }).setData(taxi_tracks); //设置数据
-
-    // deprecated temporarily
-    function get_data() {
-        $.get("./get_data").done(
-            function(data) {
-                window.track = new Array(data);
-                initMap();
-            }
-        )
-    }
 
     window.onload = function() {initMap();}
 
