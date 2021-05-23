@@ -44,12 +44,52 @@ def getDistrictStreedAndId(f):
     return f
 
 
+import math
+
+
+def parse_time(t: str):
+    """Convert timestamp to seconds
+    Args:
+        t (str): timestamp in format HH:mm:ss
+    Returns:
+        seconds (int): seconds from 00:00:00
+    """
+    h_m_s = t.split(":")
+    return int(h_m_s[0]) * 60 * 60 + int(h_m_s[1]) * 60 + int(h_m_s[2])
+
+
+from geopy.distance import geodesic
+
+
+def deleteIllegalSpeed(f):
+    id_list = np.unique(list(f["taxi_id"]))
+    f_new = pd.DataFrame()
+    for id in id_list:
+        f_id = f.loc[f["taxi_id"] == id].sort_values("time")
+        last_time = parse_time(f_id.iloc[0, 1])
+        last_lat = f_id.iloc[0, 3]
+        last_lon = f_id.iloc[0, 2]
+        for index, row in f_id.iterrows():
+            if last_time == parse_time(row["time"]):
+                continue
+            distance = geodesic((last_lat, last_lon), (row["lat"], row["lon"])).m
+            time = parse_time(row["time"]) - last_time
+            if distance / time <= 45:
+                last_lat = row["lat"]
+                last_lon = row["lon"]
+                last_time = parse_time(row["time"])
+            else:
+                print(index)
+                f_id = f_id.drop(index)
+        f_new = f_new.append(f_id)
+    return f_new
+
+
 if __name__ == "__main__":
     f = pd.read_csv("./sample_taxi.csv")
-    f[['district', 'street', 'street_id']] = None
-    # print(f)
+    # f[['district', 'street', 'street_id']] = None
     afterDeleteDataOutOfBound = deleteDataOutOfBound(f)
-    # print(afterDeleteDataOutOfBound)
-    afterAddInfo = getDistrictStreedAndId(afterDeleteDataOutOfBound)
-    # print(afterAddInfo)
-    afterAddInfo.to_csv("./sample_taxi_after_clean.csv", index=False, sep=',')
+    # afterAddInfo = getDistrictStreedAndId(afterDeleteDataOutOfBound)
+    afterAddInfo = afterDeleteDataOutOfBound
+    afterDeleteIllegalSpeed = deleteIllegalSpeed(afterAddInfo)
+    afterDeleteIllegalSpeed.to_csv("./sample_taxi_after_clean.csv", index=False, sep=',')
