@@ -97,10 +97,13 @@ def get_distance():
 
     data['near_distance'] = data.apply (lambda row: dist_func(location, row), axis=1)
     data_sorted = data.sort_values('near_distance')
-    data_sorted=data_sorted.loc[data_sorted["near_distance"] <= 5]
+    data_sorted=data_sorted.loc[data_sorted["near_distance"] <= 7]
     total = data_sorted['distance'].sum()
     row_count = data_sorted.shape[0]
-    return str(round(total/row_count, 2))
+    if row_count == 0:
+        return "not enough data!"
+    else:
+        return str(round(total/row_count, 2))
 
 if __name__ == "__main__":
     app.run(debug=True)
