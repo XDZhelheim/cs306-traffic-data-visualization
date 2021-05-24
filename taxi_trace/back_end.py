@@ -97,7 +97,7 @@ def get_distance():
 
     data['near_distance'] = data.apply (lambda row: dist_func(location, row), axis=1)
     data_sorted = data.sort_values('near_distance')
-    data_sorted.drop(data_sorted[data_sorted.near_distance > 2].index, inplace=True)
+    data_sorted=data_sorted.loc[data_sorted["near_distance"] <= 5]
     total = data_sorted['distance'].sum()
     row_count = data_sorted.shape[0]
     return str(round(total/row_count, 2))
