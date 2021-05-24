@@ -1,6 +1,7 @@
 import flask
 import pandas as pd
 import datetime
+import haversine as hs
 
 # 暂时用不到，直接浏览器打开 map.html
 
@@ -23,9 +24,15 @@ df["time"]=df["time"].apply(parse_time)
 
 k=10000
 
+data = pd.read_csv('../taxi_OD/OD_distance_data.csv')
+
 @app.route("/")
 def index():
     return flask.render_template("wait_time_pred.html")
+
+@app.route("/distance")
+def distance():
+    return flask.render_template("taxi_distance_pred.html")
 
 @app.route("/get_wait_time", methods=["GET"])
 def get_wait_time():
@@ -36,6 +43,8 @@ def get_wait_time():
 
     curr_time=datetime.datetime.now().hour*3600+datetime.datetime.now().minute*60+datetime.datetime.now().second
     app.logger.debug(curr_time)
+
+    global df
 
     df_after=df.loc[(df["time"]>curr_time) & (df["time"]-curr_time<30*60) & (df["is_passenger"]==0)]
 
@@ -72,6 +81,26 @@ def get_wait_time():
     app.logger.debug(estimate_wait_time)
 
     return estimate_wait_time
+
+def dist_func(location2, row):
+    loc1 = (float(row['lng1']), float(row['lat1']))
+    return float(hs.haversine(loc1, location2))
+
+@app.route("/get_distance", methods=["GET"])
+def get_distance():
+    global data
+
+    location=flask.request.args.get("location")
+    location=location.split(",")
+    location=list(map(float, location))
+    app.logger.debug(location)
+
+    data['near_distance'] = data.apply (lambda row: dist_func(location, row), axis=1)
+    data_sorted = data.sort_values('near_distance')
+    data_sorted.drop(data_sorted[data_sorted.near_distance > 2].index, inplace=True)
+    total = data_sorted['distance'].sum()
+    row_count = data_sorted.shape[0]
+    return str(round(total/row_count, 2))
 
 if __name__ == "__main__":
     app.run(debug=True)

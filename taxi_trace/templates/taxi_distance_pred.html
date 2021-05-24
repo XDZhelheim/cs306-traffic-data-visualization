@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>打车等待时间预测</title>
+    <title>出行距离预测</title>
 </head>
 
 <script charset="utf-8" src="https://map.qq.com/api/gljs?v=1.exp&key=A37BZ-LSCEX-XEI4U-T6WGS-Z5P7O-BNF4W&libraries=visualization"></script>
@@ -55,14 +55,14 @@
         var content = evt.latLng.toString();
         // console.log(content);
 
-        $.get("/get_wait_time", {"location": content}).done(
+        $.get("/get_distance", {"location": content}).done(
             function(data) {
                 coord = content.split(",")
                 for (var i = 0; i < coord.length; i++) {
                     coord[i]=Number(coord[i]).toFixed(3);
                 }
 
-                content = "经纬度: " + coord.join(",") + "<br>预计等待时间: " + data;
+                content = "经纬度: " + coord.join(",") + "<br>预计出行距离: " + data;
 
                 var infoWindow = new TMap.InfoWindow({
                     map: map,
