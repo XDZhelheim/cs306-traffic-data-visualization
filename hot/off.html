@@ -4,17 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <!--    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=lB1LFGD8N6ydaTCSmVxiPYSly973KBHa"></script>-->
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
-    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://mapv.baidu.com/build/mapv.min.js"></script>
     <title>下车热力图</title>
     <style type="text/css">
         ul,li{list-style: none;margin:0;padding:0;float:left;}
         html{height:100%}
         body{height:100%;margin:0px;padding:0px;font-family:"微软雅黑";}
-        #container{height:90%;width:100%;}
-        #r-result{width:100%;}
+        #container{height:100%;width:100%;}
+        #r-result{
+            width:100%;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+        }
     </style>
 </head>
 <body>
