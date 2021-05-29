@@ -3,8 +3,6 @@ import pandas as pd
 import datetime
 import haversine as hs
 
-# 暂时用不到，直接浏览器打开 map.html
-
 app=flask.Flask(__name__)
 
 def parse_time(t: str):
